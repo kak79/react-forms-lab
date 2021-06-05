@@ -1,17 +1,42 @@
 import React from "react";
 
 class TwitterMessage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      charsLeft: props.maxChars,
+      charsExceed: false,
+      postText: ''
+    };
+  }
 
-    this.state = {};
+  
+  handleChange(event) {
+    
+    if (this.state.charsExceed) {
+      return alert("too many characters!")
+    }
+
+    this.setState({
+        charsLeft: this.props.maxChars - event.target.value.length,
+        charsExceed: event.target.value.length >  this.props.maxChars  ?  true  :  false,
+        postText: event.target.value
+    });
   }
 
   render() {
     return (
       <div>
+        <p>Characters Left:  {this.state.charsLeft}</p>
         <strong>Your message:</strong>
-        <input type="text" name="message" id="message" />
+        <input 
+          type="text" 
+          name="message" 
+          id="message" 
+          value={this.state.postText}
+          onChange={this.handleChange.bind(this)}
+          placeholder="Type here"
+        />
       </div>
     );
   }
